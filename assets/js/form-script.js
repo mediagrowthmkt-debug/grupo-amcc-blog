@@ -763,8 +763,57 @@ async function handleFormSubmit(e) {
 }
 
 async function savePostToServer(html, slug) {
-    console.log('📄 Preparando post para download...', slug);
-    return savePostAsDownload(html, slug);
+    console.log('📄 Preparando post...', slug);
+    
+    // Verificar se há token do GitHub configurado
+    const githubToken = localStorage.getItem('github_token');
+    
+    if (githubToken) {
+        // Publicar automaticamente no GitHub
+        console.log('🚀 Token encontrado! Publicando no GitHub...');
+        return await publishToGitHub(html, slug, githubToken);
+    } else {
+        // Sem token: apenas preparar download
+        console.log('⚠️ Token não configurado. Preparando download manual...');
+        return savePostAsDownload(html, slug);
+    }
+}
+
+async function publishToGitHub(html, slug, token) {
+    console.log('🚀 Iniciando publicação no GitHub...');
+    
+    if (!html || html.trim().length === 0) {
+        console.error('❌ HTML vazio!');
+        throw new Error('HTML está vazio');
+    }
+    
+    try {
+        // Usar a função global do github-api.js
+        if (typeof window.publishPost === 'function') {
+            const publicUrl = await window.publishPost(slug, html);
+            
+            return {
+                success: true,
+                method: 'github',
+                filename: slug + '.html',
+                publicUrl: publicUrl,
+                message: `✅ Post publicado com sucesso no GitHub!\n\n🌐 URL pública: ${publicUrl}\n\n⏳ Aguarde 1-2 minutos para o GitHub Pages atualizar.`
+            };
+        } else {
+            throw new Error('GitHubBlogPublisher não encontrado. Verifique se github-api.js está carregado.');
+        }
+    } catch (error) {
+        console.error('❌ Erro ao publicar no GitHub:', error);
+        
+        // Se falhar, retornar opção de download manual
+        return {
+            success: false,
+            method: 'download',
+            filename: slug + '.html',
+            error: error.message,
+            message: `❌ Falha ao publicar no GitHub: ${error.message}\n\nVocê pode fazer o download manual usando o botão abaixo.`
+        };
+    }
 }
 
 function savePostAsDownload(html, slug) {
@@ -779,7 +828,7 @@ function savePostAsDownload(html, slug) {
         success: true,
         method: 'download',
         filename: slug + '.html',
-        message: '✅ Post gerado! Use o botão "📥 Baixar HTML" para baixar e depois faça commit no GitHub.'
+        message: '⚠️ Token do GitHub não configurado.\n\n✅ Post gerado! Use o botão "📥 Baixar HTML" abaixo para download manual.\n\n💡 Dica: Configure o GitHub API Token para publicação automática!'
     };
 }
 
@@ -1035,18 +1084,60 @@ function showSuccess(slug, result) {
         messageElement.style.padding = '10px';
         messageElement.style.backgroundColor = '#f0f0f0';
         messageElement.style.borderRadius = '5px';
+        messageElement.style.whiteSpace = 'pre-wrap';
         modal.querySelector('.modal-content').appendChild(messageElement);
     }
     
-    if (result && result.method === 'download') {
-        messageElement.innerHTML = '✅ <strong>Post gerado com sucesso!</strong><br>Baixe o HTML e faça commit na pasta <code>posts/</code> do GitHub.';
+    if (result && result.method === 'github') {
+        // Publicado com sucesso no GitHub
+        messageElement.innerHTML = `
+            <strong>🎉 Post publicado automaticamente no GitHub!</strong><br><br>
+            📁 Arquivo: <code>${postPath}</code><br>
+            🌐 URL pública: <a href="${result.publicUrl}" target="_blank" style="color: #007bff;">${result.publicUrl}</a><br><br>
+            ⏳ <em>Aguarde 1-2 minutos para o GitHub Pages processar o arquivo.</em>
+        `;
         messageElement.style.backgroundColor = '#d4edda';
         messageElement.style.color = '#155724';
-        messageElement.style.fontWeight = 'bold';
+        messageElement.style.fontWeight = 'normal';
+        
+        // Adicionar botão para abrir URL pública
+        let openUrlBtn = document.getElementById('openPublicUrlBtn');
+        if (!openUrlBtn) {
+            openUrlBtn = document.createElement('button');
+            openUrlBtn.id = 'openPublicUrlBtn';
+            openUrlBtn.className = 'btn-primary';
+            openUrlBtn.style.marginTop = '15px';
+            openUrlBtn.style.marginRight = '10px';
+            openUrlBtn.style.padding = '10px 20px';
+            openUrlBtn.innerHTML = '🌐 Abrir Post Publicado';
+            messageElement.parentElement.insertBefore(openUrlBtn, messageElement.nextSibling);
+        }
+        openUrlBtn.onclick = function() {
+            window.open(result.publicUrl, '_blank');
+        };
+        
+    } else if (result && result.method === 'download' && result.success === false) {
+        // Erro ao publicar no GitHub
+        messageElement.innerHTML = `
+            <strong>⚠️ Falha na publicação automática</strong><br><br>
+            ❌ Erro: ${result.error}<br><br>
+            💡 Você pode fazer o download manual usando o botão abaixo.
+        `;
+        messageElement.style.backgroundColor = '#fff3cd';
+        messageElement.style.color = '#856404';
+        messageElement.style.fontWeight = 'normal';
+        
     } else {
-        messageElement.textContent = '✅ Post gerado com sucesso!';
+        // Download manual (sem token configurado)
+        messageElement.innerHTML = `
+            <strong>✅ Post gerado com sucesso!</strong><br><br>
+            ⚠️ <em>GitHub API Token não configurado.</em><br>
+            📥 Use o botão abaixo para download manual.<br><br>
+            💡 <strong>Dica:</strong> Configure o token em "⚙️ Configurar GitHub API" para publicação automática!
+        `;
         messageElement.style.backgroundColor = '#d4edda';
         messageElement.style.color = '#155724';
+        messageElement.style.fontWeight = 'normal';
     }
     
     let downloadBtn = document.getElementById('downloadHtmlBtn');
