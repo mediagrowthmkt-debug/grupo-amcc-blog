@@ -47,6 +47,9 @@ function loadFormFromLocalStorage() {
             // Pula campos array por enquanto
             if (key.includes('[]')) return;
             
+            // NÃO restaurar o aiTemplate - sempre usar o template atualizado do HTML
+            if (key === 'aiTemplate') return;
+            
             const field = form.querySelector(`#${key}`) || form.querySelector(`[name="${key}"]`);
             
             if (field) {
