@@ -151,22 +151,47 @@ function fillTestData() {
     const dateTimeLocal = `${year}-${month}-${day}T${hours}:${minutes}`;
     
     const testData = {
+        // BLOCO 1: Identidade do Post
         h1Title: 'Como Regularizar Sua Empresa: Guia Completo AMCC',
         slug: 'como-regularizar-sua-empresa-guia-completo-amcc',
-        metaDescription: 'Aprenda como regularizar sua empresa com o Grupo AMCC. Guia completo com passo a passo para empresários que querem ficar em dia com o fisco.',
         category: 'Guia',
         author: 'Equipe AMCC',
         datePublished: dateTimeLocal,
+        authorAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200',
+        readTime: '8',
+        
+        // BLOCO 2: SEO Essencial
+        primaryKeyword: 'regularização de empresas',
+        secondaryKeywords: 'contabilidade, CNPJ, impostos, assessoria contábil, Grupo AMCC',
+        metaTitle: 'Como Regularizar Sua Empresa: Guia Completo 2026',
+        metaDescription: 'Aprenda como regularizar sua empresa de forma simples. Guia completo com passo a passo e dicas de especialistas contábeis do Grupo AMCC. Confira!',
+        searchIntent: 'Comercial',
+        
+        // BLOCO 3: Imagens
         coverImage: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200',
         coverImageAlt: 'Documentos contábeis organizados sobre mesa de escritório',
-        introduction: 'Regularizar sua empresa pode parecer uma tarefa complexa, mas com a orientação certa, o processo se torna simples e direto. Neste guia completo, a equipe do Grupo AMCC vai explicar passo a passo como colocar sua empresa em dia com todas as obrigações fiscais e contábeis.',
-        contentBody: '<h2>Por Que Regularizar Sua Empresa?</h2><p>Manter sua empresa regularizada traz inúmeras vantagens, desde evitar multas até conseguir melhores condições de crédito no mercado. Empresas regulares também transmitem mais confiança para clientes e parceiros.</p><h3>Benefícios da Regularização</h3><ul><li>Evita multas e penalidades</li><li>Melhora o acesso a crédito</li><li>Aumenta a credibilidade no mercado</li><li>Permite participar de licitações</li></ul><h2>Passo a Passo para Regularização</h2><p>O primeiro passo é fazer um diagnóstico completo da situação atual da sua empresa. Isso inclui verificar pendências fiscais, trabalhistas e previdenciárias.</p><h3>Documentos Necessários</h3><ul><li>Contrato Social atualizado</li><li>CNPJ regular</li><li>Alvará de funcionamento</li><li>Certidões negativas</li></ul>',
-        conclusion: 'Regularizar sua empresa é um investimento no futuro do seu negócio. Com a parceria do Grupo AMCC, você conta com profissionais especializados que vão orientar cada etapa do processo, garantindo que sua empresa esteja sempre em conformidade com a legislação vigente.',
+        coverImageCaption: 'Processo de regularização empresarial',
+        
+        // BLOCO 4: Conteúdo do Post
+        introduction: 'Regularizar sua empresa pode parecer uma tarefa complexa, mas com a orientação certa, o processo se torna simples e direto. Neste guia completo, a equipe do Grupo AMCC vai explicar passo a passo como colocar sua empresa em dia com todas as obrigações fiscais, contábeis e trabalhistas. Se você está iniciando um negócio ou possui uma empresa que precisa se regularizar, este é o guia perfeito para você.',
+        
+        contentBody: '<h2>Por Que Regularizar Sua Empresa?</h2><p>Manter sua empresa regularizada traz inúmeras vantagens, desde evitar multas até conseguir melhores condições de crédito no mercado. Empresas regulares também transmitem mais confiança para clientes e parceiros comerciais.</p><h3>Benefícios Principais da Regularização</h3><ul><li>Evita multas e penalidades do fisco</li><li>Melhora o acesso a crédito e financiamentos</li><li>Aumenta a credibilidade no mercado</li><li>Permite participar de licitações públicas</li><li>Facilita a contratação de colaboradores</li></ul><h2>Passo a Passo para Regularização</h2><p>O primeiro passo é fazer um diagnóstico completo da situação atual da sua empresa. Isso inclui verificar pendências fiscais, trabalhistas, previdenciárias e municipais. Com um relatório claro, você saberá exatamente o que precisa ser regularizado.</p><h3>Documentos Necessários para a Regularização</h3><ul><li>Contrato Social atualizado e registrado</li><li>CNPJ regular perante a Receita Federal</li><li>Alvará de funcionamento municipal</li><li>Certidões negativas federais, estaduais e municipais</li><li>Inscrição Estadual (se aplicável)</li><li>Comprovante de endereço comercial</li></ul><h2>Como o Grupo AMCC Pode Ajudar</h2><p>Nossa equipe de especialistas contábeis possui mais de 15 anos de experiência em regularização empresarial. Oferecemos uma análise completa e personalizada para cada cliente, garantindo conformidade total com a legislação.</p>',
+        
+        conclusion: 'Regularizar sua empresa é um investimento no futuro do seu negócio. Com a parceria do Grupo AMCC, você conta com profissionais especializados que vão orientar cada etapa do processo, garantindo que sua empresa esteja sempre em conformidade com a legislação vigente. Não deixe para depois - comece hoje mesmo sua jornada rumo a uma empresa regularizada e confiável!',
+        
+        // BLOCO 6: Tags e Organização
         tags: 'contabilidade, regularização, empresa, CNPJ, impostos, assessoria contábil',
+        relatedPosts: '/blog/como-abrir-empresa-no-brasil, /blog/dicas-contabeis-para-pmes, /blog/guia-fiscal-2026',
+        
+        // BLOCO 7: Engajamento
         ctaTitle: 'Precisa de Ajuda para Regularizar Sua Empresa?',
-        ctaText: 'Entre em contato com o Grupo AMCC e receba uma consultoria gratuita. Nossa equipe está pronta para ajudar sua empresa a crescer de forma regular e segura.',
+        ctaText: 'Entre em contato com o Grupo AMCC e receba uma consultoria gratuita sobre a situação da sua empresa. Nossa equipe está pronta para ajudar sua empresa a crescer de forma regular, segura e lucrativa.',
+        ctaLink: 'https://grupoamcc.com.br/contato',
         ctaButtonText: 'Falar com Especialista',
-        ctaLink: 'https://grupoamcc.com.br/contato'
+        
+        // BLOCO 8: Configurações
+        siteUrl: 'https://grupoamcc.com.br',
+        siteLogo: 'https://grupoamcc.com.br/logo.png'
     };
     
     // Preenche os campos
@@ -175,25 +200,107 @@ function fillTestData() {
         if (field) {
             field.value = testData[key];
             field.dispatchEvent(new Event('input', { bubbles: true }));
+            field.dispatchEvent(new Event('change', { bubbles: true }));
         }
     });
     
-    // Preenche imagem interna (primeira)
-    const internalImageUrl = document.querySelector('[name="internalImageUrl[]"]');
-    const internalImageAlt = document.querySelector('[name="internalImageAlt[]"]');
-    if (internalImageUrl) {
-        internalImageUrl.value = 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800';
-        internalImageUrl.dispatchEvent(new Event('input', { bubbles: true }));
+    // Preenche checkboxes
+    const enableComments = document.getElementById('enableComments');
+    const enableShare = document.getElementById('enableShare');
+    if (enableComments) {
+        enableComments.checked = true;
+        enableComments.dispatchEvent(new Event('change', { bubbles: true }));
     }
-    if (internalImageAlt) {
-        internalImageAlt.value = 'Consultor contábil analisando documentos fiscais';
-        internalImageAlt.dispatchEvent(new Event('input', { bubbles: true }));
+    if (enableShare) {
+        enableShare.checked = true;
+        enableShare.dispatchEvent(new Event('change', { bubbles: true }));
     }
+    
+    // Preenche imagens internas (2 imagens)
+    const form = document.getElementById('blogForm');
+    const internalImageUrls = form.querySelectorAll('[name="internalImageUrl[]"]');
+    const internalImageAlts = form.querySelectorAll('[name="internalImageAlt[]"]');
+    
+    // Garante que há pelo menos 2 imagens
+    if (internalImageUrls.length < 2) {
+        const addBtn = document.getElementById('addInternalImage');
+        if (addBtn) {
+            addBtn.click();
+        }
+    }
+    
+    // Preenche a primeira imagem interna
+    if (internalImageUrls[0]) {
+        internalImageUrls[0].value = 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800';
+        internalImageUrls[0].dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    if (internalImageAlts[0]) {
+        internalImageAlts[0].value = 'Consultor contábil analisando documentos fiscais com cliente';
+        internalImageAlts[0].dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    
+    // Preenche a segunda imagem interna (se existir)
+    if (internalImageUrls[1]) {
+        internalImageUrls[1].value = 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800';
+        internalImageUrls[1].dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    if (internalImageAlts[1]) {
+        internalImageAlts[1].value = 'Gráfico de crescimento empresarial após regularização contábil';
+        internalImageAlts[1].dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    
+    // Preenche links internos (2 links)
+    const internalLinkUrls = form.querySelectorAll('[name="internalLinkUrl[]"]');
+    const internalLinkAnchors = form.querySelectorAll('[name="internalLinkAnchor[]"]');
+    
+    // Garante que há pelo menos 2 links internos
+    if (internalLinkUrls.length < 2) {
+        const addBtn = document.getElementById('addInternalLink');
+        if (addBtn) {
+            addBtn.click();
+        }
+    }
+    
+    // Preenche o primeiro link interno
+    if (internalLinkUrls[0]) {
+        internalLinkUrls[0].value = 'https://grupoamcc.com.br/blog/como-abrir-empresa-no-brasil';
+        internalLinkUrls[0].dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    if (internalLinkAnchors[0]) {
+        internalLinkAnchors[0].value = 'como abrir empresa no Brasil';
+        internalLinkAnchors[0].dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    
+    // Preenche o segundo link interno
+    if (internalLinkUrls[1]) {
+        internalLinkUrls[1].value = 'https://grupoamcc.com.br/blog/dicas-contabeis-para-pmes';
+        internalLinkUrls[1].dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    if (internalLinkAnchors[1]) {
+        internalLinkAnchors[1].value = 'dicas contábeis para pequenas empresas';
+        internalLinkAnchors[1].dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    
+    // Preenche links externos (1 link)
+    const externalLinkUrls = form.querySelectorAll('[name="externalLinkUrl[]"]');
+    const externalLinkAnchors = form.querySelectorAll('[name="externalLinkAnchor[]"]');
+    
+    if (externalLinkUrls[0]) {
+        externalLinkUrls[0].value = 'https://www.receita.fazenda.gov.br/';
+        externalLinkUrls[0].dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    if (externalLinkAnchors[0]) {
+        externalLinkAnchors[0].value = 'portal da Receita Federal';
+        externalLinkAnchors[0].dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    
+    // Salva os dados no localStorage
+    saveFormToLocalStorage();
     
     // Feedback visual
     const statusDiv = document.getElementById('autoSaveStatus');
     if (statusDiv) {
-        statusDiv.textContent = '🧪 Dados de teste preenchidos';
+        statusDiv.textContent = '🧪 ✅ Formulário completo com dados de teste!';
         statusDiv.style.opacity = '1';
         statusDiv.style.color = '#27ae60';
         setTimeout(() => {
@@ -201,7 +308,7 @@ function fillTestData() {
         }, 3000);
     }
     
-    console.log('✅ Formulário preenchido com dados de teste');
+    console.log('✅ Formulário preenchido COMPLETAMENTE com dados de teste');
 }
 
 // ======================
