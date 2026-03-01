@@ -1,5 +1,5 @@
 // Blog Post - Funcionalidades Interativas
-// Protec Premium Granite
+// AMCC
 
 document.addEventListener('DOMContentLoaded', function() {
     // Back to Top Button
@@ -14,9 +14,201 @@ document.addEventListener('DOMContentLoaded', function() {
     // Reading Progress Bar (opcional)
     initReadingProgress();
     
+    // Related Posts - Carrega posts da página principal
+    loadRelatedPosts();
+    
     // Table of Contents (opcional)
     // initTableOfContents();
 });
+
+// ======================
+// RELATED POSTS
+// ======================
+async function loadRelatedPosts() {
+    const relatedGrid = document.querySelector('.related-posts .related-grid');
+    if (!relatedGrid) return;
+    
+    try {
+        // Detecta se está rodando localmente ou no GitHub Pages
+        const isLocal = window.location.hostname === 'localhost' || 
+                       window.location.hostname === '127.0.0.1' ||
+                       window.location.protocol === 'file:';
+        
+        let htmlFiles = [];
+        
+        if (isLocal) {
+            // Modo LOCAL - Lista manual de posts
+            htmlFiles = [
+                { name: 'marble-or-granite-guide-for-your-home-in-worcester' },
+                { name: 'window-replacement-massachusetts-guide' }
+            ];
+        } else {
+            // Modo GITHUB PAGES - Busca via API
+            const repoMatch = window.location.pathname.match(/^\/([^\/]+)/);
+            const repoName = repoMatch ? repoMatch[1] : 'grupo-amcc-blog';
+            
+            const response = await fetch(`https://api.github.com/repos/mediagrowthmkt-debug/${repoName}/contents/posts`);
+            
+            if (!response.ok) throw new Error('Erro ao buscar posts');
+            
+            const files = await response.json();
+            htmlFiles = files.filter(file => 
+                file.name.endsWith('.html') && 
+                file.name !== 'index.html' &&
+                file.type === 'file'
+            ).map(file => ({ name: file.name }));
+        }
+        
+        // Pega o slug do post atual para excluí-lo
+        const currentPath = window.location.pathname;
+        const currentSlug = currentPath.split('/').pop();
+        
+        // Filtra para não mostrar o post atual
+        htmlFiles = htmlFiles.filter(file => file.name !== currentSlug);
+        
+        // Limita a 3 posts relacionados
+        const postsToShow = htmlFiles.slice(0, 3);
+        
+        if (postsToShow.length === 0) {
+            relatedGrid.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.5);">Nenhum post relacionado disponível.</p>';
+            return;
+        }
+        
+        // Carrega metadados de cada post
+        const posts = await Promise.all(postsToShow.map(file => loadPostMetadata(file.name)));
+        const validPosts = posts.filter(p => p !== null);
+        
+        // Renderiza os posts usando DOM API (mais seguro que innerHTML)
+        relatedGrid.innerHTML = '';
+        validPosts.forEach(post => {
+            relatedGrid.appendChild(createRelatedCardElement(post));
+        });
+        
+        console.log('✅ Posts relacionados carregados:', validPosts.length);
+        
+    } catch (error) {
+        console.error('❌ Erro ao carregar posts relacionados:', error);
+        relatedGrid.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.5);">Erro ao carregar posts relacionados.</p>';
+    }
+}
+
+// Cria elemento de card relacionado usando DOM API (mais seguro que innerHTML)
+function createRelatedCardElement(post) {
+    const card = document.createElement('a');
+    card.href = sanitizeUrl(post.url) || '#';
+    card.className = 'related-card';
+    
+    const imageDiv = document.createElement('div');
+    imageDiv.className = 'related-image';
+    
+    const img = document.createElement('img');
+    img.src = sanitizeUrl(post.image) || '../assets/images/logo-amcc.webp';
+    img.alt = post.title || '';
+    img.loading = 'lazy';
+    img.onerror = function() { this.src = '../assets/images/logo-amcc.webp'; };
+    
+    imageDiv.appendChild(img);
+    
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'related-content';
+    
+    const category = document.createElement('span');
+    category.className = 'related-category';
+    category.textContent = post.category || 'Geral';
+    
+    const title = document.createElement('h3');
+    title.className = 'related-title';
+    title.textContent = post.title || '';
+    
+    const excerpt = document.createElement('p');
+    excerpt.className = 'related-excerpt';
+    excerpt.textContent = post.excerpt || '';
+    
+    contentDiv.appendChild(category);
+    contentDiv.appendChild(title);
+    contentDiv.appendChild(excerpt);
+    
+    card.appendChild(imageDiv);
+    card.appendChild(contentDiv);
+    
+    return card;
+}
+
+async function loadPostMetadata(filename) {
+    try {
+        // Determina o caminho base
+        const basePath = window.location.pathname.includes('/posts/') ? '' : 'posts/';
+        // Adiciona .html para buscar o arquivo físico, mas a URL exibida será sem extensão
+        const fileToFetch = filename.endsWith('.html') ? filename : filename + '.html';
+        const url = basePath + fileToFetch;
+        
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Post não encontrado');
+        
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        
+        // Extract metadata - sanitizar na origem
+        const rawTitle = doc.querySelector('h1')?.textContent || doc.querySelector('title')?.textContent || 'Post sem título';
+        const rawDescription = doc.querySelector('meta[name="description"]')?.content || 
+                          doc.querySelector('.post-intro p')?.textContent?.substring(0, 120) || '';
+        const rawImage = doc.querySelector('meta[property="og:image"]')?.content || 
+                     doc.querySelector('.cover-image img')?.src || 
+                     '../assets/images/logo-amcc.webp';
+        const rawCategory = doc.querySelector('meta[name="category"]')?.content || 
+                        doc.querySelector('.category-badge')?.textContent || 'Geral';
+        
+        // Sanitiza todos os dados extraídos de fonte remota
+        const sanitizedTitle = sanitizeTextContent(rawTitle.trim());
+        const sanitizedDescription = sanitizeTextContent(rawDescription.trim());
+        const excerpt = sanitizedDescription.substring(0, 100) + (sanitizedDescription.length > 100 ? '...' : '');
+        
+        return {
+            title: sanitizedTitle,
+            excerpt: excerpt,
+            image: sanitizeUrl(rawImage) || '../assets/images/logo-amcc.webp',
+            category: sanitizeTextContent(rawCategory.trim()),
+            url: sanitizeUrl(filename.replace('.html', '')) || '#'
+        };
+    } catch (error) {
+        console.error('Erro ao carregar post:', filename, error);
+        return null;
+    }
+}
+
+// Sanitiza conteúdo de texto para prevenir XSS
+function sanitizeTextContent(str) {
+    if (!str) return '';
+    return String(str).replace(/<[^>]*>/g, '').trim();
+}
+
+function escapeHtmlAttr(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
+// Sanitiza URLs para prevenir javascript: e data: protocols maliciosos
+function sanitizeUrl(url) {
+    if (!url) return '';
+    const str = String(url).trim();
+    // Permite apenas URLs relativas ou http/https
+    if (str.startsWith('/') || str.startsWith('./') || str.startsWith('../') || 
+        str.startsWith('http://') || str.startsWith('https://')) {
+        return escapeHtmlAttr(str);
+    }
+    // URLs que não começam com protocolo são tratadas como relativas
+    if (!str.includes(':')) {
+        return escapeHtmlAttr(str);
+    }
+    // Bloqueia protocols perigosos (javascript:, data:, vbscript:, etc)
+    return '';
+}
 
 // ======================
 // BACK TO TOP
@@ -58,10 +250,12 @@ function initShareButton() {
         const title = titleElement ? String(titleElement.textContent).trim() : String(document.title).trim();
         
         // Sanitiza URL - usa apenas origin + pathname, descarta query/hash potencialmente maliciosos
-        const url = window.location.origin + window.location.pathname;
+        // e valida que é uma URL segura (não javascript:, data:, etc)
+        const rawUrl = window.location.origin + window.location.pathname;
+        const url = sanitizeShareUrl(rawUrl);
         
         // Tenta usar Web Share API (mobile)
-        if (navigator.share) {
+        if (navigator.share && url) {
             try {
                 await navigator.share({
                     title: title,
@@ -70,7 +264,7 @@ function initShareButton() {
             } catch (err) {
                 console.log('Share cancelled or error:', err);
             }
-        } else {
+        } else if (url) {
             // Fallback: copia URL para clipboard
             copyToClipboard(url);
             showNotification('Link copiado para área de transferência! 📋');
@@ -78,19 +272,61 @@ function initShareButton() {
     });
 }
 
+// Sanitiza URL para compartilhamento seguro
+function sanitizeShareUrl(url) {
+    if (!url) return '';
+    const str = String(url).trim();
+    // Só permite http/https
+    if (str.startsWith('http://') || str.startsWith('https://')) {
+        // Remove caracteres potencialmente perigosos
+        return str.replace(/[<>"'`]/g, '');
+    }
+    return '';
+}
+
 function copyToClipboard(text) {
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(text);
+    // Valida que text é uma string segura antes de usar
+    const safeText = String(text || '').trim();
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        // API moderna - preferida e segura
+        navigator.clipboard.writeText(safeText).catch(err => {
+            console.warn('Não foi possível copiar:', err);
+            // Fallback usando Selection API em vez de appendChild
+            fallbackCopyToClipboard(safeText);
+        });
     } else {
-        // Fallback para navegadores antigos
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
+        fallbackCopyToClipboard(safeText);
+    }
+}
+
+// Fallback seguro sem usar appendChild com dados do usuário
+function fallbackCopyToClipboard(text) {
+    try {
+        // Usa window.getSelection em vez de criar/anexar elementos
+        const selection = window.getSelection();
+        const range = document.createRange();
+        
+        // Cria um span temporário com o texto
+        const span = document.createElement('span');
+        span.textContent = text; // textContent é seguro contra XSS
+        span.style.cssText = 'position: absolute; left: -9999px;';
+        
+        document.body.appendChild(span);
+        range.selectNodeContents(span);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        
+        const success = document.execCommand('copy');
+        
+        selection.removeAllRanges();
+        document.body.removeChild(span);
+        
+        if (!success) {
+            console.warn('Fallback copy failed');
+        }
+    } catch (err) {
+        console.warn('Copy fallback error:', err);
     }
 }
 

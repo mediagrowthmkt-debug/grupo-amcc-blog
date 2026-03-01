@@ -2,51 +2,18 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
-    <!-- Meta tags adicionais para compatibilidade mobile -->
-    <meta name="format-detection" content="telephone=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#000000">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/webp" href="../assets/images/favicon-amcc.webp" sizes="32x32">
-    <link rel="apple-touch-icon" href="../assets/images/favicon-amcc.webp">
-    
-    <title>Criar Novo Post - Blog AMCC</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
-    
-    <link rel="stylesheet" href="assets/css/form-style.css?v=1771364116">
-    <script src="scripts/github-api.js?v=1771364112" defer></script>
-    <script src="scripts/github-image-uploader.js?v=40000000003" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Novo Post - Sistema de Blog SUA EMPRESA</title>
+    <link rel="stylesheet" href="assets/css/form-style.css">
+    <script src="github-api.js" defer></script>
 </head>
 <body>
     <div class="container">
         <header class="form-header">
-            <a href="index.html" class="back-to-blog">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>Voltar ao Blog</span>
-            </a>
-            
-            <img src="../assets/images/logo-amcc.webp" alt="AMCC" class="form-logo" onerror="this.style.display='none'">
-            
-            <h1>📝 Criar Novo Post</h1>
-            <p>Sistema de criação de posts otimizado para SEO - AMCC</p>
-            
+            <h1>📝 Sistema de Criação de Posts</h1>
+            <p>Preencha os campos abaixo para gerar automaticamente um post otimizado para SEO</p>
             <div class="header-buttons">
-                <button type="button" id="fillTestData" class="btn-test" title="Preencher com dados de teste">
+                <button type="button" id="fillTestData" class="btn-test" title="Preencher com dados de teste" style="background-color: #28a745; margin-right: 10px;">
                     🧪 Preencher Teste
                 </button>
                 <button type="button" id="clearForm" class="btn-clear" title="Limpar todos os campos">
@@ -59,55 +26,7 @@
 
         <form id="blogForm" class="blog-form">
             
-            <!-- � BLOCO 0: AUTO-PREENCHIMENTO INTELIGENTE -->
-            <section class="form-section ai-autofill-section">
-                <h2>🤖 BLOCO 0: Auto-Preenchimento Inteligente</h2>
-                
-                <div class="ai-instructions">
-                    <p><strong>💡 Como funciona:</strong></p>
-                    <ol>
-                        <li>Cole o texto formatado da IA no campo abaixo</li>
-                        <li>Clique em <strong>"🚀 Preencher Automaticamente"</strong></li>
-                        <li>O sistema identifica cada campo e preenche o formulário</li>
-                        <li>Revise os campos preenchidos e faça ajustes se necessário</li>
-                        <li>Clique em <strong>"✨ Gerar Post"</strong> no final da página</li>
-                    </ol>
-                </div>
-
-                <div class="form-group">
-                    <label for="aiAutofillText">
-                        📋 Cole aqui o texto formatado da IA
-                        <span class="tooltip">O sistema identificará automaticamente os blocos e preencherá o formulário</span>
-                    </label>
-                    <textarea id="aiAutofillText" 
-                              name="aiAutofillText" 
-                              rows="15" 
-                              placeholder="Cole aqui o texto formatado com os blocos:
-
-🧱 BLOCK 1: POST IDENTITY
-Title Principal (H1): Seu título aqui
-Slug / URL Amigável: seu-slug-aqui
-...
-
-🧠 BLOCK 2: ESSENTIAL SEO
-Palavra-chave Principal: sua palavra-chave
-..."></textarea>
-                    <small class="field-info">✨ O sistema suporta formatação em português e inglês</small>
-                </div>
-
-                <div class="autofill-actions">
-                    <button type="button" id="autoFillBtn" class="btn-ai">
-                        🚀 Preencher Automaticamente
-                    </button>
-                    <button type="button" id="clearAutofillBtn" class="btn-secondary">
-                        🗑️ Limpar Texto
-                    </button>
-                </div>
-
-                <div id="autofillStatus" class="autofill-status"></div>
-            </section>
-
-            <!-- �🧱 BLOCO 1: IDENTIDADE DO POST -->
+            <!-- 🧱 BLOCO 1: IDENTIDADE DO POST -->
             <section class="form-section">
                 <h2>🧱 BLOCO 1: Identidade do Post</h2>
                 
@@ -169,23 +88,6 @@ Palavra-chave Principal: sua palavra-chave
                            id="authorAvatar" 
                            name="authorAvatar" 
                            placeholder="https://exemplo.com/avatar.jpg">
-                    
-                    <!-- BOTÃO DE UPLOAD DO AVATAR -->
-                    <div style="margin-top: 10px; display: flex; align-items: center; gap: 15px;">
-                        <div>
-                            <input type="file" id="avatarUploadInput" accept="image/*" style="display: none;">
-                            <button type="button" 
-                                    onclick="document.getElementById('avatarUploadInput').click()" 
-                                    style="padding: 10px 20px; background: #8B0F0F; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                                📤 Upload Avatar
-                            </button>
-                            <div id="avatarUploadStatus" style="margin-top: 8px; font-size: 0.9rem;"></div>
-                        </div>
-                        <img id="avatarPreview" 
-                             style="display: none; width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid #8B0F0F; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" 
-                             alt="Preview do avatar">
-                    </div>
-                    </div>
                 </div>
 
                 <div class="form-row">
@@ -290,22 +192,6 @@ Palavra-chave Principal: sua palavra-chave
                            name="coverImage" 
                            required
                            placeholder="https://exemplo.com/instalacao-granito-cozinha.jpg">
-                    
-                    <!-- BOTÃO DE UPLOAD DA CAPA -->
-                    <div style="margin-top: 10px; display: flex; align-items: flex-start; gap: 15px;">
-                        <div style="flex: 1;">
-                            <input type="file" id="coverUploadInput" accept="image/*" style="display: none;">
-                            <button type="button" 
-                                    onclick="document.getElementById('coverUploadInput').click()" 
-                                    style="padding: 10px 20px; background: #8B0F0F; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                                📤 Upload Capa
-                            </button>
-                            <div id="coverUploadStatus" style="margin-top: 8px; font-size: 0.9rem;"></div>
-                        </div>
-                        <img id="coverPreview" 
-                             style="display: none; max-width: 200px; height: auto; border-radius: 8px; border: 3px solid #8B0F0F; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" 
-                             alt="Preview da capa">
-                    </div>
                 </div>
 
                 <div class="form-group required">
@@ -341,25 +227,10 @@ Palavra-chave Principal: sua palavra-chave
                             <input type="text" 
                                    name="internalImageAlt[]" 
                                    placeholder="Alt text descritivo">
-                            <input type="file" class="internal-image-upload" accept="image/*" style="display: none;" id="internalUpload_0">
-                            <button type="button" 
-                                    onclick="document.getElementById('internalUpload_0').click()" 
-                                    style="padding: 8px 16px; background: #8B0F0F; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; white-space: nowrap;">
-                                📤 Upload
-                            </button>
                             <button type="button" class="btn-remove">✕</button>
                         </div>
                     </div>
                     <button type="button" id="addInternalImage" class="btn-secondary">+ Adicionar Imagem</button>
-                    
-                    <!-- PROMPTS DE IMAGEM GERADOS AUTOMATICAMENTE -->
-                    <div id="imagePromptsContainer" style="margin-top: 20px; display: none;">
-                        <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                            <span style="font-size: 0.9rem; color: #8B0F0F;">🎨 Prompts para gerar imagens (copie e cole na IA)</span>
-                            <button type="button" id="copyAllPrompts" class="btn-secondary" style="padding: 5px 12px; font-size: 0.8rem;">📋 Copiar Todos</button>
-                        </label>
-                        <div id="imagePromptsList" style="display: flex; flex-direction: column; gap: 10px;"></div>
-                    </div>
                 </div>
             </section>
 
@@ -439,6 +310,7 @@ Palavra-chave Principal: sua palavra-chave
                             <input type="text" 
                                    name="internalLinkAnchor[]" 
                                    placeholder="Texto âncora (não use 'clique aqui')">
+                            <button type="button" class="btn-remove">✕</button>
                         </div>
                     </div>
                     <button type="button" id="addInternalLink" class="btn-secondary">+ Adicionar Link Interno</button>
@@ -457,6 +329,7 @@ Palavra-chave Principal: sua palavra-chave
                             <input type="text" 
                                    name="externalLinkAnchor[]" 
                                    placeholder="Texto âncora">
+                            <button type="button" class="btn-remove">✕</button>
                         </div>
                     </div>
                     <button type="button" id="addExternalLink" class="btn-secondary">+ Adicionar Link Externo</button>
@@ -491,101 +364,46 @@ Palavra-chave Principal: sua palavra-chave
                 </div>
             </section>
 
-            <!-- 🚀 BLOCO 7: FORMULÁRIO DE CAPTAÇÃO -->
+            <!-- 🚀 BLOCO 7: ENGAJAMENTO -->
             <section class="form-section">
-                <h2>🚀 BLOCO 7: Formulário de Captação</h2>
+                <h2>🚀 BLOCO 7: Engajamento (SEO Indireto)</h2>
                 
                 <div class="form-group required">
-                    <label for="formTitle">
-                        Título do Formulário
-                        <span class="tooltip">Crie um gancho com o conteúdo do post</span>
-                    </label>
+                    <label for="ctaTitle">Título do CTA</label>
                     <input type="text" 
-                           id="formTitle" 
-                           name="formTitle" 
+                           id="ctaTitle" 
+                           name="ctaTitle" 
                            required
-                           placeholder="Quer um Orçamento Gratuito para Instalação de Granito?">
+                           placeholder="Precisa de Instalação Profissional?">
                 </div>
 
                 <div class="form-group required">
-                    <label for="formSubtitle">Subtítulo/Descrição do Formulário</label>
-                    <textarea id="formSubtitle" 
-                              name="formSubtitle" 
+                    <label for="ctaText">Texto do CTA</label>
+                    <textarea id="ctaText" 
+                              name="ctaText" 
                               rows="2" 
                               required
-                              placeholder="Preencha o formulário abaixo e nossa equipe entrará em contato em até 24h com um orçamento personalizado."></textarea>
+                              placeholder="Entre em contato conosco e receba um orçamento gratuito para instalação de granito premium."></textarea>
                 </div>
 
-                <div class="form-group required">
-                    <label for="formButtonText">Texto do Botão de Envio</label>
-                    <input type="text" 
-                           id="formButtonText" 
-                           name="formButtonText" 
-                           required
-                           value="Solicitar Orçamento Grátis"
-                           placeholder="Solicitar Orçamento Grátis">
-                </div>
+                <div class="form-row">
+                    <div class="form-group required">
+                        <label for="ctaLink">Link do CTA</label>
+                        <input type="url" 
+                               id="ctaLink" 
+                               name="ctaLink" 
+                               required
+                               placeholder="https://SEU-DOMINIO.com/contato">
+                    </div>
 
-                <div class="form-group required">
-                    <label for="webhookUrl">
-                        Webhook URL (Make.com)
-                        <span class="tooltip">URL do webhook para enviar os dados do formulário</span>
-                    </label>
-                    <input type="url" 
-                           id="webhookUrl" 
-                           name="webhookUrl" 
-                           required
-                           placeholder="https://hook.us2.make.com/xxxxxx">
-                </div>
-
-                <div class="form-group required">
-                    <label for="campaignName">Nome da Campanha</label>
-                    <input type="text" 
-                           id="campaignName" 
-                           name="campaignName" 
-                           required
-                           placeholder="Blog MediaGrowth - Instalação Granito">
-                </div>
-
-                <div class="form-group">
-                    <label for="qualifiedQuestion">
-                        Pergunta Qualificatória (opcional)
-                        <span class="tooltip">Pergunta adicional para qualificar o lead</span>
-                    </label>
-                    <input type="text" 
-                           id="qualifiedQuestion" 
-                           name="qualifiedQuestion" 
-                           placeholder="Quando você pretende fazer a instalação?">
-                </div>
-
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" 
-                               id="formCollectEmail" 
-                               name="formCollectEmail" 
-                               checked>
-                        Coletar E-mail
-                    </label>
-                </div>
-
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" 
-                               id="formCollectPhone" 
-                               name="formCollectPhone" 
-                               checked>
-                        Coletar Telefone
-                    </label>
-                </div>
-
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" 
-                               id="formCollectName" 
-                               name="formCollectName" 
-                               checked>
-                        Coletar Nome
-                    </label>
+                    <div class="form-group required">
+                        <label for="ctaButtonText">Texto do Botão</label>
+                        <input type="text" 
+                               id="ctaButtonText" 
+                               name="ctaButtonText" 
+                               required
+                               placeholder="Solicitar Orçamento">
+                    </div>
                 </div>
             </section>
 
@@ -649,12 +467,12 @@ Palavra-chave Principal: sua palavra-chave
 
                 <div class="form-group">
                     <label for="aiTemplate">
-                        📋 Template Completo para IA (Cole no ChatGPT/Claude)
-                        <span class="tooltip">⚠️ O "Conteúdo Principal" deve vir em HTML (<h2>, <h3>, <p>, <ul>, <li>)</span>
+                        📋 Template Completo (preencha os [COLCHETES] e copie tudo)
+                        <span class="tooltip">Substitua [VALORES] com suas informações antes de copiar</span>
                     </label>
                     <textarea id="aiTemplate" 
                               name="aiTemplate" 
-                              rows="45">🎯 MISSÃO PRINCIPAL
+                              rows="55">🎯 MISSÃO PRINCIPAL
 Crie um blog post altamente persuasivo, otimizado para SEO e focado em geração de leads, combinando técnicas avançadas de copywriting emocional, autoridade, prova social e otimização semântica, com o objetivo de ranquear no Google e converter visitantes em leads qualificados.
 
 🎯 OBJETIVO ESTRATÉGICO
@@ -704,24 +522,6 @@ SEO E CONTEÚDO:
 🚀 FOCO FINAL
 Este conteúdo não é apenas informativo. Ele deve: EDUCAR, CONVENCER, CRIAR DESEJO e LEVAR À AÇÃO.
 Escreva como um especialista em SEO e copywriting focado em conversão, não como um redator genérico.
-
-⚠️ REGRA CRÍTICA DE FORMATAÇÃO:
-O "Conteúdo Principal" do BLOCO 4 DEVE ser escrito SEMPRE em HTML formatado usando:
-• <h2> para títulos de seções principais
-• <h3> para subtítulos
-• <p> para parágrafos
-• <ul> e <li> para listas não ordenadas
-• <ol> e <li> para listas ordenadas
-• <strong> para negrito, <em> para itálico
-
-EXEMPLO CORRETO:
-<h2>Por Que Investir em Paisagismo Sustentável?</h2>
-<p>O paisagismo sustentável não é apenas uma tendência, é uma necessidade para condomínios modernos.</p>
-<ul>
-  <li>Redução de custos com manutenção</li>
-  <li>Valorização do imóvel</li>
-  <li>Consciência ambiental</li>
-</ul>
 
 ================================================================================
 
@@ -778,25 +578,10 @@ Imagem Interna 3 - Alt Text (opcional):
 
 ✍️ BLOCO 4: CONTEÚDO DO POST
 
-Introdução (100-150 palavras):
+Introdução [100-150 palavras]:
 
 
-Conteúdo Principal (SEMPRE use tags HTML: H2, H3, P, UL, LI):
-
-<h2>Título da Seção Principal</h2>
-<p>Parágrafo explicativo aqui...</p>
-
-<h3>Subtítulo</h3>
-<p>Mais conteúdo detalhado.</p>
-
-<ul>
-  <li>Item de lista 1</li>
-  <li>Item de lista 2</li>
-  <li>Item de lista 3</li>
-</ul>
-
-<h2>Segunda Seção Principal</h2>
-<p>Continue desenvolvendo o conteúdo com HTML formatado.</p>
+Conteúdo Principal [use HTML: <h2>, <h3>, <p>, <ul>, <li>]:
 
 
 Conclusão:
@@ -831,23 +616,15 @@ Posts Relacionados (URLs) [separados por vírgula]:
 
 ================================================================================
 
-🚀 BLOCO 7: FORMULÁRIO DE CAPTAÇÃO
+🚀 BLOCO 7: ENGAJAMENTO
 
-Título do Formulário [crie um gancho com o conteúdo]:
+Título do CTA:
 
-Subtítulo/Descrição do Formulário:
+Texto do CTA:
 
-Texto do Botão de Envio:
+Link do CTA:
 
-Webhook URL (Make.com):
-
-Nome da Campanha:
-
-Pergunta Qualificatória (opcional):
-
-☐ Coletar Nome
-☐ Coletar E-mail
-☐ Coletar Telefone
+Texto do Botão:
 
 ================================================================================
 
@@ -874,6 +651,15 @@ Habilitar botões de compartilhamento? [Sim/Não]:</textarea>
                 <button type="submit" class="btn-primary">✨ Gerar Post</button>
             </div>
         </form>
+
+        <!-- PREVIEW MODAL -->
+        <div id="previewModal" class="modal">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <h2>Pré-visualização do Post</h2>
+                <div id="previewContent"></div>
+            </div>
+        </div>
 
         <!-- SUCCESS MODAL -->
         <div id="successModal" class="modal">
@@ -929,6 +715,6 @@ Habilitar botões de compartilhamento? [Sim/Não]:</textarea>
         </div>
     </div>
 
-    <script src="assets/js/form-script.js?v=30000000002"></script>
+    <script src="assets/js/form-script.js"></script>
 </body>
 </html>
