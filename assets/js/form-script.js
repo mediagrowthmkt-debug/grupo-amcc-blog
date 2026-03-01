@@ -1455,7 +1455,7 @@ function generateFullPreviewPage(data) {
             <img src="../assets/images/logo-amcc.webp" alt="AMCC" class="header-logo">
             <nav class="header-nav">
                 <a href="https://amcc.com.br">Site Oficial</a>
-                <a href="https://blog.amcc.com.br">Ver Todos os Blogs</a>
+                <a href="../index.html">Ver Todos os Blogs</a>
             </nav>
         </div>
     </header>
@@ -2579,7 +2579,7 @@ async function generatePostHtml(data) {
             <img src="../assets/images/logo-amcc.webp" alt="AMCC" class="header-logo">
             <nav class="header-nav">
                 <a href="https://amcc.com.br">Site Oficial</a>
-                <a href="https://blog.amcc.com.br">Ver Todos os Blogs</a>
+                <a href="../index.html">Ver Todos os Blogs</a>
             </nav>
         </div>
     </header>
