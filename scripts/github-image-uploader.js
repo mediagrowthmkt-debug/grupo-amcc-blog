@@ -222,8 +222,10 @@ async function handleAvatarUpload(file) {
         
         // Usa o slug do post para organizar as imagens por post
         var slugInput = document.getElementById('slug');
-        var postSlug = slugInput ? slugInput.value : 'post';
+        var postSlug = (slugInput && slugInput.value && slugInput.value.trim()) ? slugInput.value.trim() : 'post-' + Date.now();
         postSlug = postSlug.startsWith('/') ? postSlug.substring(1) : postSlug;
+        // Remove caracteres inválidos do slug
+        postSlug = postSlug.replace(/[^a-zA-Z0-9\-_]/g, '-').replace(/--+/g, '-');
         
         // Avatar salvo na pasta do post (não mais sobrescreve outros posts)
         var filePath = 'posts/' + postSlug + '/avatar.jpg';
@@ -289,8 +291,10 @@ async function handleCoverUpload(file) {
         await ensureImageRepository(credentials.token, credentials.username);
         
         var slugInput = document.getElementById('slug');
-        var postSlug = slugInput ? slugInput.value : 'post';
+        var postSlug = (slugInput && slugInput.value && slugInput.value.trim()) ? slugInput.value.trim() : 'post-' + Date.now();
         postSlug = postSlug.startsWith('/') ? postSlug.substring(1) : postSlug;
+        // Remove caracteres inválidos do slug
+        postSlug = postSlug.replace(/[^a-zA-Z0-9\-_]/g, '-').replace(/--+/g, '-');
         
         var filePath = 'posts/' + postSlug + '/cover.jpg';
         var optimizedBlob = await optimizeImage(file, 1200, 630, 0.85);
@@ -354,8 +358,10 @@ async function handleInternalImageUpload(file, targetInput, index) {
         await ensureImageRepository(credentials.token, credentials.username);
         
         var slugInput = document.getElementById('slug');
-        var postSlug = slugInput ? slugInput.value : 'post';
+        var postSlug = (slugInput && slugInput.value && slugInput.value.trim()) ? slugInput.value.trim() : 'post-' + Date.now();
         postSlug = postSlug.startsWith('/') ? postSlug.substring(1) : postSlug;
+        // Remove caracteres inválidos do slug
+        postSlug = postSlug.replace(/[^a-zA-Z0-9\-_]/g, '-').replace(/--+/g, '-');
         
         var filePath = 'posts/' + postSlug + '/image-' + index + '.jpg';
         var optimizedBlob = await optimizeImage(file, 1920, 1080, 0.85);
