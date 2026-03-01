@@ -1,16 +1,20 @@
 # ⚠️ PROBLEMAS CONHECIDOS E SOLUÇÕES
 
-**Versão:** 4.0  
+**Versão:** 4.1  
 **Última atualização:** Março 2026  
-**Baseado em:** Implementação Motel Xenon
+**Baseado em:** Implementação Grupo AMCC / Motel Xenon
 
-> 📋 Este documento lista todos os problemas encontrados durante a implementação do blog Motel Xenon e suas soluções definitivas. **LEIA ANTES DE REPLICAR PARA NOVO CLIENTE!**
+> 📋 Este documento lista todos os problemas encontrados durante a implementação do blog e suas soluções definitivas. **LEIA ANTES DE REPLICAR PARA NOVO CLIENTE!**
 
 ---
 
 ## 📑 ÍNDICE
 
 1. [Upload de Imagens](#1-upload-de-imagens)
+   - 1.1 Path com barra dupla (slug começa com /)
+   - 1.2 Repositório de imagens errado
+   - 1.3 Upload volta ao início sem fazer nada
+   - **1.4 Slug vazio causa path malformado** ⭐ NOVO!
 2. [Preview do Blog](#2-preview-do-blog)
 3. [Layout da Página Publicada](#3-layout-da-página-publicada)
 4. [Logo no Header e Footer](#4-logo-no-header-e-footer)
@@ -18,7 +22,7 @@
 6. [Segurança XSS](#6-segurança-xss)
 7. [Git e GitHub](#7-git-e-github)
 8. [Conflitos de Código](#8-conflitos-de-código)
-9. [Links do Blog Index](#9-links-do-blog-index) ⭐ NOVO!
+9. [Links do Blog Index](#9-links-do-blog-index)
 
 ---
 
@@ -93,6 +97,51 @@ function setupImageUploadHandlers() { ... }
 // ✅ CORRETO - nome diferente para evitar conflito
 function setupLegacyImageUploadHandlers() { ... }
 ```
+
+---
+
+### ❌ Problema 1.4: "path contains a malformed path component" (SLUG VAZIO) ⭐ NOVO!
+
+**Data:** Março 2026  
+**Criticidade:** 🔴 ALTA
+
+**Sintoma no Console:**
+```
+github-image-uploader.js:145 Enviando: posts//avatar.jpg
+github-image-uploader.js:252 Erro ao enviar avatar: Error: Falha no upload: path contains a malformed path component
+```
+
+**Causa:** O campo `slug` está vazio quando o usuário tenta fazer upload de imagem. Isso gera um path com `//` duplo: `posts//avatar.jpg`
+
+**Código problemático:**
+```javascript
+// ❌ ERRADO - não valida se slug está vazio
+var slugInput = document.getElementById('slug');
+var postSlug = slugInput ? slugInput.value : 'post';
+// Se slugInput existe mas value é "", postSlug fica ""
+```
+
+**Solução:** Em `scripts/github-image-uploader.js`, nas funções `handleAvatarUpload`, `handleCoverUpload` e `handleInternalImageUpload`, use esta validação:
+
+```javascript
+// ✅ CORRETO - valida se slug está vazio e sanitiza caracteres
+var slugInput = document.getElementById('slug');
+var postSlug = (slugInput && slugInput.value && slugInput.value.trim()) 
+    ? slugInput.value.trim() 
+    : 'post-' + Date.now();  // Fallback com timestamp
+postSlug = postSlug.startsWith('/') ? postSlug.substring(1) : postSlug;
+// Remove caracteres inválidos do slug (apenas permite a-z, A-Z, 0-9, -, _)
+postSlug = postSlug.replace(/[^a-zA-Z0-9\-_]/g, '-').replace(/--+/g, '-');
+
+var filePath = 'posts/' + postSlug + '/avatar.jpg';
+```
+
+**Resultado:**
+- Se slug preenchido: `posts/meu-post-legal/avatar.jpg` ✅
+- Se slug vazio: `posts/post-1709312345678/avatar.jpg` ✅
+- Nunca mais: `posts//avatar.jpg` ❌
+
+**Dica:** Considere também adicionar validação no formulário para exigir que o slug seja preenchido antes de permitir upload de imagens.
 
 ---
 
