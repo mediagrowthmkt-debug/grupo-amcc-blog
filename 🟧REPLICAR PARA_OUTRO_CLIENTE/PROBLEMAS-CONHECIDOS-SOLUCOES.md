@@ -1,6 +1,6 @@
 # ⚠️ PROBLEMAS CONHECIDOS E SOLUÇÕES
 
-**Versão:** 4.1  
+**Versão:** 4.2  
 **Última atualização:** Março 2026  
 **Baseado em:** Implementação Grupo AMCC / Motel Xenon
 
@@ -14,7 +14,7 @@
    - 1.1 Path com barra dupla (slug começa com /)
    - 1.2 Repositório de imagens errado
    - 1.3 Upload volta ao início sem fazer nada
-   - **1.4 Slug vazio causa path malformado** ⭐ NOVO!
+   - 1.4 Slug vazio causa path malformado
 2. [Preview do Blog](#2-preview-do-blog)
 3. [Layout da Página Publicada](#3-layout-da-página-publicada)
 4. [Logo no Header e Footer](#4-logo-no-header-e-footer)
@@ -23,6 +23,7 @@
 7. [Git e GitHub](#7-git-e-github)
 8. [Conflitos de Código](#8-conflitos-de-código)
 9. [Links do Blog Index](#9-links-do-blog-index)
+10. [**Navegação do Header**](#10-navegação-do-header) ⭐ NOVO!
 
 ---
 
@@ -527,6 +528,55 @@ Esta regex aceita:
 
 **Verificação:** Após corrigir, clicar em um card deve abrir a URL correta do post.
 
+
+---
+
+## 10. NAVEGAÇÃO DO HEADER
+
+### ❌ Problema 10.1: "Ver Todos os Blogs" não funciona ou aponta para URL errada ⭐ NOVO!
+
+**Data:** Março 2026  
+**Criticidade:** 🟡 MÉDIA
+
+**Sintoma:**
+- Ao clicar em "Ver Todos os Blogs" no header do post, o link não funciona
+- O link aponta para um domínio errado (ex: `blog.cliente.com.br` quando deveria ir para o index)
+- No preview, o link abre página em branco ou erro 404
+
+**Causa:** O link "Ver Todos os Blogs" estava configurado com URL absoluta (`https://blog.cliente.com.br`) que pode não existir ou estar errada.
+
+**Código problemático:**
+```javascript
+// ❌ ERRADO - URL absoluta que pode mudar ou não existir
+<nav class="header-nav">
+    <a href="https://site-cliente.com.br">Site Oficial</a>
+    <a href="https://blog.cliente.com.br">Ver Todos os Blogs</a>
+</nav>
+```
+
+**Solução:** Em `assets/js/form-script.js`, nas funções `generateFullPreviewPage` (~linha 1458) e `generatePostHtml` (~linha 2582), usar caminho RELATIVO:
+
+```javascript
+// ✅ CORRETO - caminho relativo funciona em qualquer domínio
+<nav class="header-nav">
+    <a href="https://site-cliente.com.br">Site Oficial</a>
+    <a href="../index.html">Ver Todos os Blogs</a>
+</nav>
+```
+
+**Por que usar caminho relativo?**
+- ✅ Funciona em localhost durante desenvolvimento
+- ✅ Funciona no GitHub Pages (`usuario.github.io/repo/`)
+- ✅ Funciona com domínio customizado (`blog.cliente.com.br`)
+- ✅ Não precisa alterar quando mudar de domínio
+- ✅ Preview e post publicado funcionam igual
+
+**Locais para verificar/alterar:**
+1. `assets/js/form-script.js` - função `generateFullPreviewPage` (~linha 1458)
+2. `assets/js/form-script.js` - função `generatePostHtml` (~linha 2582)
+
+**Dica:** Somente o link "Site Oficial" deve usar URL absoluta (pois aponta para site externo). O link "Ver Todos os Blogs" sempre deve usar `../index.html`.
+
 ---
 
 ## ✅ CHECKLIST PRÉ-DEPLOY
@@ -543,7 +593,8 @@ Antes de considerar a implementação completa, verificar:
 - [ ] Links do Bloco 5 aparecem no post
 - [ ] Formulário de lead aparece (se configurado)
 - [ ] Responsivo funciona em mobile
-- [ ] **⭐ NOVO:** Cards do index redirecionam para os posts (não para `/#`)
+- [ ] Cards do index redirecionam para os posts (não para `/#`)
+- [ ] **⭐ NOVO:** "Ver Todos os Blogs" no header usa `../index.html`
 - [ ] GitHub Pages está ativado
 - [ ] CNAME configurado (se usar domínio customizado)
 
@@ -558,4 +609,5 @@ Se encontrar um problema não listado aqui:
 3. Documente o problema e a solução neste arquivo
 4. Atualize a versão do documento
 
-**Última revisão:** Março 2026 - Implementação Motel Xenon
+**Última revisão:** Março 2026 - Implementação Grupo AMCC
+

@@ -179,14 +179,17 @@ Edite: `assets/js/form-script.js`
 **Navegação (2 lugares):**
 
 ```javascript
-// Linha 1162 (função generateFullPreviewPage)
+// Linha ~1458 (função generateFullPreviewPage)
 <nav class="header-nav">
     <a href="https://[SITE-CLIENTE].com.br">Site Oficial</a>
-    <a href="https://[BLOG-CLIENTE].com.br">Ver Todos os Blogs</a>
+    <a href="../index.html">Ver Todos os Blogs</a>  <!-- ✅ SEMPRE USAR CAMINHO RELATIVO! -->
 </nav>
 
-// Linha 2143 (função generatePostHtml) - MESMA MUDANÇA
+// Linha ~2582 (função generatePostHtml) - MESMA MUDANÇA
 ```
+
+> ⚠️ **IMPORTANTE:** O link "Ver Todos os Blogs" DEVE usar caminho relativo `../index.html` e NÃO URL absoluta!
+> Isso garante que o link funcione corretamente em qualquer domínio (localhost, GitHub Pages, domínio customizado).
 
 **Footer (2 lugares):**
 
