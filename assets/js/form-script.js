@@ -1607,7 +1607,7 @@ async function savePostToServer(originalHtml, slug) {
     let html = originalHtml;
     
     // Verifica se há token GitHub configurado
-    const githubToken = localStorage.getItem('github_token');
+    const githubToken = sessionStorage.getItem('github_token');
     
     if (githubToken) {
         // ✅ Token configurado - publica automaticamente no GitHub
@@ -2917,7 +2917,7 @@ const tokenStatus = document.getElementById('tokenStatus');
 configBtn?.addEventListener('click', () => {
     githubModal.style.display = 'flex';
     // Carregar token salvo (mascarado)
-    const savedToken = localStorage.getItem('github_token');
+    const savedToken = sessionStorage.getItem('github_token');
     if (savedToken) {
         githubTokenInput.value = '••••••••••••••••••••';
         tokenStatus.textContent = '✅ Token já configurado';
@@ -2946,7 +2946,7 @@ saveTokenBtn?.addEventListener('click', () => {
         return;
     }
     
-    localStorage.setItem('github_token', token);
+    sessionStorage.setItem('github_token', token);
     tokenStatus.textContent = '✅ Token salvo com sucesso!';
     tokenStatus.className = 'success';
     
@@ -2958,7 +2958,7 @@ saveTokenBtn?.addEventListener('click', () => {
 
 // Testar conexão
 testTokenBtn?.addEventListener('click', async () => {
-    const token = localStorage.getItem('github_token');
+    const token = sessionStorage.getItem('github_token');
     
     if (!token) {
         tokenStatus.textContent = '❌ Nenhum token configurado';
